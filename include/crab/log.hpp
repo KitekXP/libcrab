@@ -21,7 +21,9 @@ namespace crab {
         int8_t verbosity;
 
         // Helper proxy for << stream operators
-        template <int8_t MinVerbosity>
+        enum Level : int8_t { ERR = 0, INFO = 1, WARN = 2, DBG = 3 };
+
+        template <int8_t MinLevel>
         struct LogStream {
             log &logger;
             const char *prefix;
@@ -30,7 +32,7 @@ namespace crab {
 
             template <typename T>
             LogStream &operator<<(const T &msg) {
-                if (logger.verbosity > MinVerbosity) {
+                if (logger.verbosity >= MinLevel) {
                     crab::FP2Str(logger.log_out) << prefix << msg;
                 }
                 return *this;
@@ -38,7 +40,7 @@ namespace crab {
 
             // support stream manipulators like std::endl
             LogStream &operator<<(std::ostream& (*manip)(std::ostream&)) {
-                if (logger.verbosity > MinVerbosity) {
+                if (logger.verbosity >= MinLevel) {
                     crab::FP2Str(logger.log_out) << manip;
                 }
                 return *this;
@@ -61,9 +63,9 @@ namespace crab {
         }
 
         // Methods returning stream proxies for each severity
-        LogStream<0> inf() { return LogStream<0>(*this, CRAB_LOG_INFO); }
-        LogStream<1> warn() { return LogStream<1>(*this, CRAB_LOG_WARN); }
-        LogStream<-1> err() { return LogStream<-1>(*this, CRAB_LOG_ERROR); }
-        LogStream<2> dbg() { return LogStream<2>(*this, CRAB_LOG_DEBUG); }
+        LogStream<INFO> inf() { return LogStream<INFO>(*this, CRAB_LOG_INFO); }
+        LogStream<WARN> warn() { return LogStream<WARN>(*this, CRAB_LOG_WARN); }
+        LogStream<ERR> err() { return LogStream<ERR>(*this, CRAB_LOG_ERROR); }
+        LogStream<DBG> dbg() { return LogStream<DBG>(*this, CRAB_LOG_DEBUG); }
     };
 }
