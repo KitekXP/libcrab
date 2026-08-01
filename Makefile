@@ -4,7 +4,7 @@ OPTMISATION ?= high
 CINC         = -Iinclude
 
 LD      ?= gcc
-LDFLAGS += -shared -fPIC
+LDFLAGS += -shared -fPIC -Wl,-Map=$(OUTDIR)/$(DYNAMIC).map
 
 AR      ?= ar
 ARFLAGS  = rcs
