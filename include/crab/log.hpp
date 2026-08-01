@@ -63,7 +63,7 @@ namespace crab {
         }
 
         // Methods returning stream proxies for each severity
-        LogStream<INFO> inf() { return LogStream<INFO>(*this, CRAB_LOG_INFO); }
+        LogStream<INFO> info() { return LogStream<INFO>(*this, CRAB_LOG_INFO); }
         LogStream<WARN> warn() { return LogStream<WARN>(*this, CRAB_LOG_WARN); }
         LogStream<ERR> err() { return LogStream<ERR>(*this, CRAB_LOG_ERROR); }
         LogStream<DBG> dbg() { return LogStream<DBG>(*this, CRAB_LOG_DEBUG); }
